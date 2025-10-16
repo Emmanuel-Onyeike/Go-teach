@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GoTeach Platform | Godfrey Okoye University</title>
+    <!-- Load Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tailwind Configuration for Custom Colors & Fonts -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-dark': '#080a15', // Ultra dark background
+                        'secondary-dark': '#15172b', // Base color for glass background
+                        'accent': '#6366f1', // Brighter Indigo accent
+                        'accent-light': '#818cf8',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Apply smooth scrolling and Inter font globally */
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+            background-color: #080a15; /* Ultra Dark Background */
+        }
+
+        /* --- Glassmorphism Effect Styles --- */
+        .glass-card {
+            /* Semi-transparent light background (white 5%) */
+            background-color: rgba(255, 255, 255, 0.05);
+            /* Blur the background content */
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            /* Subtle white border (20% opacity) */
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            /* Soft shadow for depth */
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .glass-card:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.5); /* Border brightens on hover */
+            transform: translateY(-2px); /* Subtle lift instead of scale */
+        }
+        
+        .header-glass {
+            background-color: rgba(8, 10, 21, 0.9); /* Opaque background for sticky header */
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .glass-input {
+            background-color: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+        .glass-input:focus {
+            background-color: rgba(255, 255, 255, 0.07);
+            border-color: #6366f1; /* Accent color on focus */
+            outline: none;
+        }
+
+        /* Utility to hide/show sections */
+        .hidden-page { display: none; }
+
+    </style>
+</head>
+
+<body class="bg-primary-dark text-white antialiased">
+
+    <!-- Header & Navigation (Glassy) -->
+    <header class="sticky top-0 z-50 header-glass shadow-xl border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <!-- Logo/Title - Links back to landing page -->
+            <button onclick="showPage('landing-page')" class="text-3xl font-black tracking-tighter text-accent hover:text-accent-light transition duration-150">GoTeach GOU</button>
+            
+            <!-- Call to Action Button -->
+            <div class="flex items-center space-x-4">
+                <button onclick="showPage('teacher-portal', true)"
+                    class="px-4 py-2 bg-accent hover:bg-accent-light transition duration-300 rounded-full text-sm font-bold shadow-2xl shadow-indigo-500/50 transform hover:scale-105">
+                    Teacher Portal
+                </button>
+                <button onclick="showPage('student-portal', true)"
+                    class="px-4 py-2 glass-card bg-white/10 hover:bg-white/20 transition duration-300 rounded-full text-sm font-bold transform hover:scale-105 hidden sm:block">
+                    Student Portal
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main id="app-container">
+        <!-- Success Message Area (Always present) -->
+        <div id="status-message" class="fixed top-20 right-4 z-[10000] p-4 rounded-lg shadow-xl hidden"></div>
+
+        <!-- LANDING PAGE VIEW (Default View) -->
+        <section id="landing-page" class="view">
+            <div class="max-w-7xl mx-auto">
+                <!-- Hero Section -->
+                <section class="py-24 md:py-40 text-center px-4 sm:px-6 lg:px-8">
+                    <h1 class="text-5xl md:text-8xl font-black tracking-tight mb-8 leading-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-indigo-300">
+                        GoTeach: <span class="block mt-2 md:inline">Next-Gen Education.</span>
+                    </h1>
+                    <p class="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto mb-12 font-light">
+                        The official digital assessment and learning platform for **Godfrey Okoye University**. Experience seamless class management, secure examinations, and instant feedback.
+                    </p>
+                    <div class="space-y-4 sm:space-y-0 sm:space-x-6 flex flex-col sm:flex-row justify-center">
+                        <button onclick="showPage('teacher-portal')"
+                            class="w-full sm:w-auto px-10 py-4 text-lg font-bold rounded-full transition duration-300 bg-accent hover:bg-accent-light shadow-2xl shadow-indigo-600/40 transform hover:translate-y-[-2px]">
+                            Teacher Portal
+                        </button>
+                        <button onclick="showPage('student-portal')"
+                            class="w-full sm:w-auto px-10 py-4 text-lg font-bold rounded-full transition duration-300 glass-card bg-white/10 hover:bg-white/20">
+                            Student Portal
+                        </button>
+                    </div>
+                </section>
+
+                <!-- Features Section (Glassy Cards) -->
+                <section id="features" class="py-20 border-t border-b border-white/10 px-4 sm:px-6 lg:px-8">
+                    <h2 class="text-3xl sm:text-5xl font-bold mb-16 text-center tracking-tight">System <span class="text-accent">Capabilities</span></h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10">
+                        <!-- Feature 1: Assessment Management -->
+                        <div class="p-6 sm:p-8 rounded-2xl glass-card">
+                            <div class="text-4xl sm:text-5xl text-accent mb-4">📝</div>
+                            <h3 class="text-xl sm:text-2xl font-semibold mb-3">Secure Assessment Engine</h3>
+                            <p class="text-gray-400 font-light">Lecturers can rapidly deploy time-bound exams and quizzes from centralized question banks, ensuring a standardized and secure testing environment for GOU students.</p>
+                        </div>
+                        <!-- Feature 2: Digital Learning & Content -->
+                        <div class="p-6 sm:p-8 rounded-2xl glass-card">
+                            <div class="text-4xl sm:text-5xl text-accent mb-4">📚</div>
+                            <h3 class="text-xl sm:text-2xl font-semibold mb-3">Rich Resource Library</h3>
+                            <p class="text-gray-400 font-light">Centralized access to all lecture notes, required readings, video tutorials, and supplementary course materials, available 24/7 for all enrolled students.</p>
+                        </div>
+                        <!-- Feature 3: Analytics & Feedback -->
+                        <div class="p-6 sm:p-8 rounded-2xl glass-card">
+                            <div class="text-4xl sm:text-5xl text-accent mb-4">📈</div>
+                            <h3 class="text-xl sm:text-2xl font-semibold mb-3">Insightful Performance Analytics</h3>
+                            <p class="text-gray-400 font-light">Real-time grading and data analytics dashboards provide teachers with immediate performance insights and streamline administrative grading tasks.</p>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- GoTeach Advantage Section -->
+                <section id="advantage" class="py-20 border-t border-b border-white/10 px-4 sm:px-6 lg:px-8">
+                    <h2 class="text-3xl sm:text-5xl font-bold mb-16 text-center tracking-tight">The GoTeach <span class="text-accent">Advantage</span></h2>
+                    <div class="space-y-8 md:space-y-12">
+                        <!-- Item 1: Efficiency & Speed -->
+                        <div class="md:flex md:items-center glass-card p-6 md:p-10 rounded-2xl">
+                            <div class="md:w-1/3 text-center md:text-left mb-6 md:mb-0">
+                                <h3 class="text-3xl sm:text-4xl font-extrabold text-accent">Efficiency</h3>
+                                <p class="text-gray-400 mt-1">Streamlining academic workflow.</p>
+                            </div>
+                            <div class="md:w-2/3 md:pl-12 border-t md:border-t-0 md:border-l border-white/10 pt-6 md:pt-0">
+                                <p class="text-base sm:text-xl text-gray-300">Minimize paperwork and maximize teaching time. GoTeach automates question delivery, submission collection, and simple grading, freeing up GOU faculty to focus on complex instruction and research.</p>
+                            </div>
+                        </div>
+                        <!-- Item 2: Accessibility & Reliability -->
+                        <div class="md:flex md:items-center glass-card p-6 md:p-10 rounded-2xl">
+                            <div class="md:w-1/3 text-center md:text-left mb-6 md:mb-0">
+                                <h3 class="text-3xl sm:text-4xl font-extrabold text-accent">Reliability</h3>
+                                <p class="text-gray-400 mt-1">Accessible everywhere, every time.</p>
+                            </div>
+                            <div class="md:w-2/3 md:pl-12 border-t md:border-t-0 md:border-l border-white/10 pt-6 md:pt-0">
+                                <p class="text-base sm:text-xl text-gray-300">Built on a robust cloud foundation, the platform guarantees high uptime and mobile responsiveness, ensuring students can access materials and complete assessments reliably, even on low bandwidth.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Security Warning Section -->
+                <section id="security" class="py-20 px-4 sm:px-6 lg:px-8">
+                    <div class="max-w-4xl mx-auto text-center p-8 sm:p-10 rounded-2xl glass-card border-red-500/30 border-2 bg-red-900/10">
+                        <h2 class="text-3xl sm:text-4xl font-extrabold mb-4 text-red-400 tracking-tight">🛑 ACADEMIC INTEGRITY WARNING 🛑</h2>
+                        <p class="text-base sm:text-lg text-red-300 mb-6 font-semibold">
+                            Unauthorized role switching is strictly prohibited and monitored.
+                        </p>
+                        <p class="text-gray-300 leading-relaxed font-light">
+                            The GoTeach platform utilizes your GOU credentials for role verification. Any attempt by a Student to register as a Teacher, or vice-versa, constitutes a breach of academic conduct and will lead to automatic flagging, logging, and potential disciplinary action. Please proceed only with your authorized role.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Final Call to Action Block -->
+                <section class="py-20 px-4 sm:px-6 lg:px-8">
+                    <div class="max-w-4xl mx-auto text-center">
+                        <div class="p-10 md:p-16 rounded-2xl glass-card border-accent/30 border-2">
+                            <h2 class="text-4xl md:text-5xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-indigo-300 to-white">
+                                Ready to Transform Education at GOU?
+                            </h2>
+                            <p class="text-lg sm:text-xl text-gray-300 mb-8 font-light max-w-2xl mx-auto">
+                                Join the digital revolution. Sign up now to access your personalized dashboard and begin your GoTeach experience.
+                            </p>
+                            <button onclick="showPage('student-portal')"
+                                class="px-12 py-4 text-xl font-bold rounded-full transition duration-300 bg-accent hover:bg-accent-light shadow-2xl shadow-indigo-600/40 transform hover:scale-105">
+                                Start Here
+                            </button>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </section>
+
+        <!-- STUDENT PORTAL VIEW (Initially Hidden) -->
+        <section id="student-portal" class="view hidden-page py-20 px-4 sm:px-6 lg:px-8 min-h-screen flex items-center justify-center">
+            <div class="max-w-md w-full">
+                <h2 class="text-4xl font-black text-center mb-8 text-indigo-300">Student Portal</h2>
+                <div class="glass-card p-8 md:p-10 rounded-2xl">
+                    <p class="text-center text-gray-400 mb-6 text-sm">Sign up to enroll or login to access your courses.</p>
+                    
+                    <!-- Role Display -->
+                    <div class="text-center mb-4 p-2 rounded-lg bg-white/5 border border-indigo-500/30">
+                        <p class="text-xs font-semibold uppercase tracking-widest text-indigo-400">Your Role: STUDENT</p>
+                        <p class="text-xs text-gray-500 mt-1">User ID: <span id="student-user-id">Awaiting Auth...</span></p>
+                    </div>
+
+                    <!-- Tabs for Login/Sign Up -->
+                    <div class="flex mb-6 space-x-2">
+                        <button id="student-login-tab" onclick="toggleForm('student', 'login')" class="flex-1 py-2 text-sm font-semibold rounded-lg bg-accent/20 border border-accent">Login</button>
+                        <button id="student-signup-tab" onclick="toggleForm('student', 'signup')" class="flex-1 py-2 text-sm font-semibold rounded-lg bg-white/10">Sign Up</button>
+                    </div>
+
+                    <!-- Student Login Form -->
+                    <form id="student-login-form" onsubmit="handleLogin(event, 'student')" class="space-y-6">
+                        <input type="email" id="s_email_login" class="glass-input w-full p-3 rounded-lg text-sm" placeholder="GOU Email Address" required>
+                        <input type="password" id="s_password_login" class="glass-input w-full p-3 rounded-lg text-sm" placeholder="Password" required>
+                        <button type="submit" class="w-full py-3 bg-accent hover:bg-accent-light rounded-lg text-sm font-bold transition duration-200">
+                            Student Login
+                        </button>
+                    </form>
+
+                    <!-- Student Sign Up Form (Initially Hidden) -->
+                    <form id="student-signup-form" onsubmit="handleSignUp(event, 'student')" class="space-y-6 hidden">
+                        <input type="text" id="s_name_signup" class="glass-input w-full p-3 rounded-lg text-sm" placeholder="Full Name" required>
+                        <input type="email" id="s_email_signup" class="glass-input w-full p-3 rounded-lg text-sm" placeholder="GOU Email Address" required>
+                        <input type="password" id="s_password_signup" class="glass-input w-full p-3 rounded-lg text-sm" placeholder="Create Password (Min 6 characters)" required minlength="6">
+                        <button type="submit" class="w-full py-3 bg-accent hover:bg-accent-light rounded-lg text-sm font-bold transition duration-200">
+                            Register as Student
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- TEACHER PORTAL VIEW (Initially Hidden) -->
+        <section id="teacher-portal" class="view hidden-page py-20 px-4 sm:px-6 lg:px-8 min-h-screen flex items-center justify-center">
+            <div class="max-w-md w-full">
+                <h2 class="text-4xl font-black text-center mb-8 text-indigo-300">Teacher Portal</h2>
+                <div class="glass-card p-8 md:p-10 rounded-2xl">
+                    <p class="text-center text-gray-400 mb-6 text-sm">Sign up with your faculty email or login to manage your courses.</p>
+                    
+                    <!-- Role Display -->
+                    <div class="text-center mb-4 p-2 rounded-lg bg-white/5 border border-indigo-500/30">
+                        <p class="text-xs font-semibold uppercase tracking-widest text-indigo-400">Your Role: TEACHER</p>
+                        <p class="text-xs text-gray-500 mt-1">User ID: <span id="teacher-user-id">Awaiting Auth...</span></p>
+                    </div>
+
+                    <!-- Tabs for Login/Sign Up -->
+                    <div class="flex mb-6 space-x-2">
+                        <button id="teacher-login-tab" onclick="toggleForm('teacher', 'login')" class="flex-1 py-2 text-sm font-semibold rounded-lg bg-accent/20 border border-accent">Login</button>
+                        <button id="teacher-signup-tab" onclick="toggleForm('teacher', 'signup')" class="flex-1 py-2 text-sm font-semibold rounded-lg bg-white/10">Sign Up</button>
+                    </div>
+
+                    <!-- Teacher Login Form -->
+                    <form id="teacher-login-form" onsubmit="handleLogin(event, 'teacher')" class="space-y-6">
+                        <input type="email" id="t_email_login" class="glass-input w-full p-3 rounded-lg text-sm" placeholder="Faculty Email Address" required>
+                        <input type="password" id="t_password_login" class="glass-input w-full p-3 rounded-lg text-sm" placeholder="Password" required>
+                        <button type="submit" class="w-full py-3 bg-accent hover:bg-accent-light rounded-lg text-sm font-bold transition duration-200">
+                            Teacher Login
+                        </button>
+                    </form>
+
+                    <!-- Teacher Sign Up Form (Initially Hidden) -->
+                    <form id="teacher-signup-form" onsubmit="handleSignUp(event, 'teacher')" class="space-y-6 hidden">
+                        <input type="text" id="t_name_signup" class="glass-input w-full p-3 rounded-lg text-sm" placeholder="Full Name" required>
+                        <input type="email" id="t_email_signup" class="glass-input w-full p-3 rounded-lg text-sm" placeholder="Faculty Email Address" required>
+                        <input type="password" id="t_password_signup" class="glass-input w-full p-3 rounded-lg text-sm" placeholder="Create Password (Min 6 characters)" required minlength="6">
+                        <button type="submit" class="w-full py-3 bg-accent hover:bg-accent-light rounded-lg text-sm font-bold transition duration-200">
+                            Register as Teacher
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer (Glassy) -->
+    <footer class="py-8 mt-12 header-glass border-t border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-400 text-sm">
+            <p class="mb-2">&copy; 2024 GoTeach Platform. All rights reserved for Godfrey Okoye University.</p>
+            <p class="text-xs text-gray-500 font-light">
+                Developed to enhance the future of digital learning at GOU.
+            </p>
+            <p class="mt-4 text-xs font-black tracking-widest uppercase text-accent">
+                Powered by TechNxxt Company
+            </p>
+        </div>
+    </footer>
+
+</body>
+
+<!-- JavaScript for App Logic and Firebase Integration -->
